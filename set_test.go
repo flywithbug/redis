@@ -14,7 +14,6 @@ func init() {
 func TestSAdd(t *testing.T) {
 	fmt.Println(SAdd("Set1", "aa", "bb"))
 	fmt.Println(SAdd("Set", "abd3", "d23"))
-
 }
 
 func TestSExistMember(t *testing.T) {
