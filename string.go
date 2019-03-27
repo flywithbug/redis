@@ -9,7 +9,6 @@ import (
 const (
 	RedisKey_SET    = "SET"
 	RedisKey_GETSET = "GETSET"
-
 	RedisKey_GET = "GET"
 	RedisKey_DEL = "DEL"
 )
