@@ -29,6 +29,11 @@ const (
 
 	RedisKey_SRANDMEMBER = "SRANDMEMBER" //随机返回名称为key的set的一个元素
 
+
+
+
+
+
 )
 
 /*
@@ -139,8 +144,8 @@ func SMembers(key string) (replay []interface{}, err error) {
 	return redis.Values(rc.Do(RedisKey_SMEMBERS, key))
 }
 
-func SRandMember(key string) (replay interface{}, err error) {
+func SRandMember(key string,count int) (replay []interface{}, err error) {
 	rc := redisPool.Get()
 	defer rc.Close()
-	return rc.Do(RedisKey_SRANDMEMBER, key)
+	return redis.Values(rc.Do(RedisKey_SRANDMEMBER, key,count))
 }

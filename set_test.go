@@ -59,5 +59,5 @@ func TestSMembers(t *testing.T) {
 }
 
 func TestSRandMember(t *testing.T) {
-	fmt.Println(redis.String(SRandMember("Set3")))
+	fmt.Println(redis.Strings(SRandMember("Set0",6)))
 }
