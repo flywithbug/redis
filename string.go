@@ -13,7 +13,6 @@ const (
 	RedisKey_GETSET = "GETSET"
 
 	RedisKey_GET = "GET"
-	RedisKey_DEL = "DEL"
 
 	RedisKey_MSET = "MSET" //批量设置多个string的值
 	RedisKey_MGET = "MGET"
@@ -74,16 +73,6 @@ func Get(key string) (reply string, err error) {
 	rc := redisPool.Get()
 	defer rc.Close()
 	return redis.String(rc.Do(RedisKey_GET, key))
-}
-
-/*
-删除数据，
-*/
-
-func Remove(key string) (reply int, err error) {
-	rc := redisPool.Get()
-	defer rc.Close()
-	return redis.Int(rc.Do(RedisKey_DEL, key))
 }
 
 /*

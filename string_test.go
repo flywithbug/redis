@@ -14,7 +14,6 @@ func TestSetExp(t *testing.T) {
 }
 
 func TestGet(t *testing.T) {
-	fmt.Println(Remove("c"))
 }
 
 func TestGetSet(t *testing.T) {
@@ -66,3 +65,4 @@ func TestSubStr(t *testing.T) {
 	fmt.Println(SubStr("a",0,5))
 
 }
+
