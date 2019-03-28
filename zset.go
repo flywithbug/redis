@@ -17,19 +17,19 @@ const (
 	RedisKey_ZCARD = "Zcard"
 	RedisKey_ZCOUNT = "ZCOUNT"
 	RedisKey_ZINCRBY = "ZINCRBY"
-
 	RedisKey_ZINTERSTORE = "ZINTERSTORE"
-
 	RedisKey_ZLEXCOUNT = "ZLEXCOUNT" //计算字典区间成员数(分数都相同，按照字典排序)
-
 	RedisKey_ZRANGE = "ZRANGE"  //递增区间
 	RedisKey_ZRevRange = "ZRevRange" //递减区间
-
 	RedisKey_ZRangeByLex = "ZRangeByLex"
-
-
 	RedisKey_ZRANGEBYSCORE = "ZRANGEBYSCORE"
 
+	RedisKey_ZRANK = "ZRANK"
+
+	RedisKey_ZREM= "ZREM"
+
+
+	RedisKey_ZREMRANGEBYLEX = "ZREMRANGEBYLEX"
 
 
 
@@ -154,9 +154,9 @@ func ZRangeByLex(key,min,max interface{})(reply []interface{},err error)  {
 Redis ZRangeByScore 返回有序集合中指定分数区间的成员列表。有序集成员按分数值递增(从小到大)次序排列。
 具有相同分数值的成员按字典序来排列(该属性是有序集提供的，不需要额外的计算)。
 默认情况下，区间的取值使用闭区间 (小于等于或大于等于)，你也可以通过给参数前增加 ( 符号来使用可选的开区间 (小于或大于)。
-ZRANGEBYSCORE salary -inf +inf               # 显示整个有序集
- ZRANGEBYSCORE salary -inf +inf WITHSCORES  # 显示整个有序集及成员的 score 值
-ZRANGEBYSCORE salary -inf 5000 WITHSCORES    # 显示工资 <=5000 的所有成员
+ZRangeByScore salary -inf +inf               # 显示整个有序集
+ ZRangeByScore salary -inf +inf WithSCORES  # 显示整个有序集及成员的 score 值
+ZRangeByScore salary -inf 5000 WithSCORES    # 显示工资 <=5000 的所有成员
 # 显示工资大于 5000 小于等于 400000 的成员
 */
 func ZRangeByScore(key, min,max interface{},needScore bool)(reply []interface{},err error)  {
@@ -166,4 +166,33 @@ func ZRangeByScore(key, min,max interface{},needScore bool)(reply []interface{},
 		return redis.Values(rc.Do(RedisKey_ZRANGEBYSCORE,key,min,max,"WithSCORES"))
 	}
 	return redis.Values(rc.Do(RedisKey_ZRANGEBYSCORE,key,min,max))
+}
+
+/*
+Redis Zrank 返回有序集中指定成员的排名。其中有序集成员按分数值递增(从小到大)顺序排列。
+*/
+func ZRank(key,members interface{})(reply int,err error)  {
+	rc := redisPool.Get()
+	defer rc.Close()
+	return redis.Int(rc.Do(RedisKey_ZRANK,key,members))
+}
+
+/*
+Redis ZRem 命令用于移除有序集中的一个或多个成员，不存在的成员将被忽略。
+当 key 存在但不是有序集类型时，返回一个错误。
+*/
+func ZRem(key interface{},members ...interface{})(reply int,err error)  {
+	rc := redisPool.Get()
+	defer rc.Close()
+	return redis.Int(rc.Do(RedisKey_ZREM,argsForm(members,key)...))
+}
+
+
+/*
+ ZRemRangeByLex 命令用于移除有序集合中给定的字典区间的所有成员。
+*/
+func ZRemRangeByLex(key,min,max interface{})(reply int,err error)  {
+	rc := redisPool.Get()
+	defer rc.Close()
+	return redis.Int(rc.Do(RedisKey_ZREMRANGEBYLEX, key,min,max))
 }

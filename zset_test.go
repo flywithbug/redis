@@ -42,16 +42,36 @@ func TestZRangeByLex(t *testing.T) {
 }
 
 func TestZRangeByScore(t *testing.T) {
-	//fmt.Println(ZAdd("salary",2500,"Jack"))
-	//fmt.Println(ZAdd("salary",5000,"Tom"))
-	//fmt.Println(ZAdd("salary",12000,"Peter"))
+	fmt.Println(ZAdd("salary",2500,"Jack"))
+	fmt.Println(ZAdd("salary",5000,"Tom"))
+	fmt.Println(ZAdd("salary",12000,"Peter"))
 
 	fmt.Println(redis.Strings(ZRangeByScore("salary","-inf","+inf",false)))
 	fmt.Println(redis.Strings(ZRangeByScore("salary","-inf","+inf",true)))
 	fmt.Println(redis.Strings(ZRangeByScore("salary","-inf","5000",true)))
 	fmt.Println(redis.Strings(ZRangeByScore("salary","(5000",40000,true)))
+	fmt.Println(redis.Strings(ZRangeByScore("salary",5000,40000,true)))
 
+}
 
+func TestZRank(t *testing.T) {
+	fmt.Println(ZRank("salary","Tom"))
+	fmt.Println(ZRank("salary","Jack"))
 
+	fmt.Println(ZRank("salary","Peter"))
 
+}
+
+func TestZRem(t *testing.T) {
+	fmt.Println(ZAdd("salary",2500,"Jack"))
+	fmt.Println(ZAdd("salary",5000,"Tom"))
+	fmt.Println(ZAdd("salary",12000,"Peter"))
+	fmt.Println(ZRem("salary","Tom","Peter"))
+}
+
+func TestZRemRangeByLex(t *testing.T) {
+	fmt.Println(ZAdd("salary",2500,"Jack"))
+	fmt.Println(ZAdd("salary",5000,"Tom"))
+	fmt.Println(ZAdd("salary",12000,"Peter"))
+	fmt.Println(ZRemRangeByLex("salary","[Jack","[Peter"))
 }
