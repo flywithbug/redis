@@ -32,7 +32,6 @@ Redis HSet 命令用于为哈希表中的字段赋值 。
 如果哈希表不存在，一个新的哈希表被创建并进行 HSET 操作。
 如果字段已经存在于哈希表中，旧值将被覆盖。
 */
-
 func HSet(key , field , value interface{}) (reply int, err error) {
 	rc := redisPool.Get()
 	defer rc.Close()
@@ -154,9 +153,8 @@ func HLen(hash interface{})(reply int, err error)  {
 }
 
 
-
 /*
- Hvals 命令返回哈希表所有域(field)的值。
+ HValues 命令返回哈希表所有域(field)的值。
 */
 func HValues(hash interface{})(reply []interface{}, err error)  {
 	rc := redisPool.Get()
