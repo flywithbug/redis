@@ -58,3 +58,7 @@ func TestHLen(t *testing.T) {
 func TestHMGet(t *testing.T) {
 	fmt.Println(redis.Strings(HMGet("Hash","field","InCre")))
 }
+
+func TestHValues(t *testing.T) {
+	fmt.Println(redis.Strings(HValues("Hash")))
+}

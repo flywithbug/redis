@@ -23,6 +23,8 @@ const (
 
 	RedisKey_HMGET = "HMGET" // Hmget 命令用于返回哈希表中，一个或多个给定字段的值。
 
+	RedisKey_HVals = "HVALS"
+
 )
 
 /*
@@ -46,6 +48,18 @@ func HGet(key,filed interface{} )(reply string,err error)  {
 	defer rc.Close()
 	return redis.String(rc.Do(RedisKey_HGET, key,filed))
 }
+
+
+/*
+ HMGet 命令用于返回哈希表中，一个或多个给定字段的值。
+*/
+func HMGet(hash interface{},fields ...interface{})(reply []interface{}, err error)  {
+	rc := redisPool.Get()
+	defer rc.Close()
+	return redis.Values(rc.Do(RedisKey_HMGET, argsForm(fields,hash)...))
+}
+
+
 /*
  HGetAll 命令用于返回哈希表中，所有的字段和值。
  在返回值里，紧跟每个字段名(field name)之后是字段的值(value)，所以返回值的长度是哈希表大小的两倍。
@@ -103,7 +117,6 @@ func HMSet(key interface{}, fieldsValues ...interface{}) (reply interface{}, err
 	defer rc.Close()
 	return rc.Do(RedisKey_HMSET, argsForm(fieldsValues, key)...)
 }
-
 /*
 HDel 命令用于删除哈希表 key 中的一个或多个指定字段，不存在的字段将被忽略。
 */
@@ -141,11 +154,13 @@ func HLen(hash interface{})(reply int, err error)  {
 }
 
 
+
 /*
- HMGet 命令用于返回哈希表中，一个或多个给定字段的值。
+ Hvals 命令返回哈希表所有域(field)的值。
 */
-func HMGet(hash interface{},fields ...interface{})(reply []interface{}, err error)  {
+func HValues(hash interface{})(reply []interface{}, err error)  {
 	rc := redisPool.Get()
 	defer rc.Close()
-	return redis.Values(rc.Do(RedisKey_HMGET, argsForm(fields,hash)...))
+	return redis.Values(rc.Do(RedisKey_HVals, hash))
 }
+
