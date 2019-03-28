@@ -34,4 +34,24 @@ func TestZLexCount(t *testing.T) {
 
 func TestZRange(t *testing.T) {
 	fmt.Println(redis.Strings(ZRange("zAdd",0,4,true)))
+	fmt.Println(redis.Strings(ZRevRange("zAdd",0,4,true)))
+}
+
+func TestZRangeByLex(t *testing.T) {
+	fmt.Println(redis.Strings(ZRangeByLex("zAdd","-","[value3")))
+}
+
+func TestZRangeByScore(t *testing.T) {
+	//fmt.Println(ZAdd("salary",2500,"Jack"))
+	//fmt.Println(ZAdd("salary",5000,"Tom"))
+	//fmt.Println(ZAdd("salary",12000,"Peter"))
+
+	fmt.Println(redis.Strings(ZRangeByScore("salary","-inf","+inf",false)))
+	fmt.Println(redis.Strings(ZRangeByScore("salary","-inf","+inf",true)))
+	fmt.Println(redis.Strings(ZRangeByScore("salary","-inf","5000",true)))
+	fmt.Println(redis.Strings(ZRangeByScore("salary","(5000",40000,true)))
+
+
+
+
 }

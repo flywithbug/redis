@@ -22,8 +22,16 @@ const (
 
 	RedisKey_ZLEXCOUNT = "ZLEXCOUNT" //计算字典区间成员数(分数都相同，按照字典排序)
 
+	RedisKey_ZRANGE = "ZRANGE"  //递增区间
+	RedisKey_ZRevRange = "ZRevRange" //递减区间
 
-	RedisKey_ZRANGE = "ZRANGE"
+	RedisKey_ZRangeByLex = "ZRangeByLex"
+
+
+	RedisKey_ZRANGEBYSCORE = "ZRANGEBYSCORE"
+
+
+
 
 )
 
@@ -111,6 +119,7 @@ Redis ZRange 返回有序集中，指定区间内的成员。
 下标参数 start 和 stop 都以 0 为底，也就是说，以 0 表示有序集第一个成员，以 1 表示有序集第二个成员，以此类推。
 你也可以使用负数下标，以 -1 表示最后一个成员， -2 表示倒数第二个成员，以此类推。
 */
+//递增
 func ZRange(key interface{},min,max int,needScore bool)(reply []interface{},err error)  {
 	rc := redisPool.Get()
 	defer rc.Close()
@@ -120,3 +129,41 @@ func ZRange(key interface{},min,max int,needScore bool)(reply []interface{},err 
 	return redis.Values(rc.Do(RedisKey_ZRANGE,key,min,max))
 }
 
+//递减
+func ZRevRange(key interface{},min,max int,needScore bool)(reply []interface{},err error)  {
+	rc := redisPool.Get()
+	defer rc.Close()
+	if needScore {
+		return redis.Values(rc.Do(RedisKey_ZRevRange,key,min,max,"WithSCORES"))
+	}
+	return redis.Values(rc.Do(RedisKey_ZRevRange,key,min,max))
+}
+
+
+/*
+Redis ZRangeByLex 通过字典区间返回有序集合的成员。
+*/
+func ZRangeByLex(key,min,max interface{})(reply []interface{},err error)  {
+	rc := redisPool.Get()
+	defer rc.Close()
+	return redis.Values(rc.Do(RedisKey_ZRangeByLex, key,min,max))
+}
+
+
+/*
+Redis ZRangeByScore 返回有序集合中指定分数区间的成员列表。有序集成员按分数值递增(从小到大)次序排列。
+具有相同分数值的成员按字典序来排列(该属性是有序集提供的，不需要额外的计算)。
+默认情况下，区间的取值使用闭区间 (小于等于或大于等于)，你也可以通过给参数前增加 ( 符号来使用可选的开区间 (小于或大于)。
+ZRANGEBYSCORE salary -inf +inf               # 显示整个有序集
+ ZRANGEBYSCORE salary -inf +inf WITHSCORES  # 显示整个有序集及成员的 score 值
+ZRANGEBYSCORE salary -inf 5000 WITHSCORES    # 显示工资 <=5000 的所有成员
+# 显示工资大于 5000 小于等于 400000 的成员
+*/
+func ZRangeByScore(key, min,max interface{},needScore bool)(reply []interface{},err error)  {
+	rc := redisPool.Get()
+	defer rc.Close()
+	if needScore {
+		return redis.Values(rc.Do(RedisKey_ZRANGEBYSCORE,key,min,max,"WithSCORES"))
+	}
+	return redis.Values(rc.Do(RedisKey_ZRANGEBYSCORE,key,min,max))
+}
