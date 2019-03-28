@@ -16,6 +16,7 @@ const (
 	RedisKey_ZADD = "ZADD"
 
 	RedisKey_ZCARD = "Zcard"
+	RedisKey_ZCOUNT = "ZCOUNT"
 
 
 )
@@ -45,3 +46,12 @@ func ZCard(key interface{})(reply int,err error)  {
 	return redis.Int(rc.Do(RedisKey_ZCARD, key))
 }
 
+
+/*
+ZCount 命令用于计算有序集合中指定分数区间的成员数量。
+*/
+func ZCount(key interface{},min,max float64)(reply int,err error)  {
+	rc := redisPool.Get()
+	defer rc.Close()
+	return redis.Int(rc.Do(RedisKey_ZCOUNT, key,min,max))
+}
