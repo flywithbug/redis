@@ -14,5 +14,15 @@ func TestHMSet(t *testing.T) {
 }
 
 func TestHSetNx(t *testing.T) {
-	fmt.Println(HSetNx("Hash","field","value"))
+	fmt.Println(HSetNx("Hash","filed","value"))
+}
+
+func TestHDel(t *testing.T) {
+	fmt.Println(HDel("Hash","filed"))
+}
+
+func TestHExists(t *testing.T) {
+	fmt.Println(HExists("Hash","filed"))
+	fmt.Println(HExists("Hash","filed123"))
+
 }
