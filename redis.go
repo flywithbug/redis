@@ -58,3 +58,8 @@ func newRedisPool(options Options) {
 		},
 	}
 }
+
+func Flush()  {
+	rc := redisPool.Get()
+	rc.Flush()
+}
