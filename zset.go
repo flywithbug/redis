@@ -31,6 +31,14 @@ const (
 
 	RedisKey_ZREVRANGEBYSCORE = "ZREVRANGEBYSCORE"
 
+	RedisKey_ZSCORE = "ZSCORE"
+
+	RedisKey_ZUNIONSTORE = "ZUNIONSTORE"
+
+
+
+	WEIGHTS = "WEIGHTS"
+
 
 )
 
@@ -228,3 +236,29 @@ func ZRemRangeByScore(key interface{},min,max int)(reply int,err error)  {
 	return redis.Int(rc.Do(RedisKey_ZREMRANGEBYSCORE, key,min,max))
 }
 
+/*
+Redis ZScore 命令返回有序集中，成员的分数值。 如果成员元素不是有序集 key 的成员，或 key 不存在，返回 nil 。
+*/
+func ZScore(key,member interface{})(reply interface{},err error)  {
+	rc := redisPool.Get()
+	defer rc.Close()
+	return rc.Do(RedisKey_ZSCORE, key,member)
+}
+
+/*
+Redis ZUnionStore 命令计算给定的一个或多个有序集的并集，其中给定 key 的数量必须以 numKeys 参数指定，
+并将该并集(结果集)储存到 destination 。
+默认情况下，结果集中某个成员的分数值是所有给定集下该成员分数值之和 。
+*/
+func ZUnionStore(dst interface{},keys ...interface{})(reply int,err error)  {
+	rc := redisPool.Get()
+	defer rc.Close()
+	return redis.Int(rc.Do(RedisKey_ZUNIONSTORE, argsForm(keys,dst,len(keys))...))
+}
+
+/*
+Redis ZScan 命令用于迭代有序集合中的元素（包括元素成员和元素分值）
+*/
+func ZScan()  {
+
+}

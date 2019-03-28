@@ -97,5 +97,23 @@ func TestZRemRangeByScore(t *testing.T) {
 	fmt.Println(ZRemRangeByScore("salary",200,5000))
 }
 
+func TestZScore(t *testing.T) {
+	fmt.Println(ZAdd("salary",2500,"Jack"))
+	fmt.Println(ZAdd("salary",5000,"Tom"))
+	fmt.Println(ZAdd("salary",12000,"Peter"))
+	fmt.Println(redis.String(ZScore("salary","Jack")))
+}
 
+func TestZRevRange(t *testing.T) {
 
+}
+
+func TestZUnionStore(t *testing.T) {
+	fmt.Println(ZAdd("salary",2500,"Jack"))
+	fmt.Println(ZAdd("salary",5000,"Tom"))
+	fmt.Println(ZAdd("salary",12000,"Peter"))
+	fmt.Println(ZAdd("salary1",2500,"Jack"))
+	fmt.Println(ZAdd("salary1",5000,"Tom"))
+	fmt.Println(ZAdd("salary1",12000,"Peter"))
+	fmt.Println(ZUnionStore("salary2","salary","salary1"))
+}
