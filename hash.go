@@ -12,16 +12,13 @@ const (
 	RedisKey_HSET = "HSET"
 	RedisKey_HGET = "HGET"
 	RedisKey_HGETALL = "HGETALL"
-
 	RedisKey_HINCRBY  = "HINCRBY"
-
 	RedisKey_HDEL = "HDEL"
-
 	RedisKey_HMSET = "HMSET"
-
 	RedisKey_HSETNX = "HSETNX"
-
 	RedisKey_HExists = "HExists" //命令用于查看哈希表的指定字段是否存在。
+	RedisKey_HIncrByFloat = "HIncrByFloat" //Redis Hincrbyfloat 命令用于为哈希表中的字段值加上指定浮点数增量值。如果指定的字段不存在，那么在执行命令前，字段的值被初始化为 0 。
+	RedisKey_HKeys = "HKEYS"
 )
 
 /*
@@ -70,6 +67,17 @@ func HIncrBy(key ,field interface{},incr int) (reply int, err error)  {
 }
 
 /*
+HIncrByFloat 命令用于为哈希表中的字段值加上指定浮点数增量值。
+如果指定的字段不存在，那么在执行命令前，字段的值被初始化为 0 。
+*/
+func HIncrByFloat(key,field interface{},incr float64)(reply float64, err error)  {
+	rc := redisPool.Get()
+	defer rc.Close()
+	return redis.Float64(rc.Do(RedisKey_HIncrByFloat, key, field, incr))
+}
+
+
+/*
 Redis HSetNx 命令用于为哈希表中不存在的的字段赋值 。
 如果哈希表不存在，一个新的哈希表被创建并进行 HSET 操作。
 如果字段已经存在于哈希表中，操作无效。
@@ -108,4 +116,10 @@ func HExists(key, field interface{}) (reply int, err error) {
 	rc := redisPool.Get()
 	defer rc.Close()
 	return redis.Int(rc.Do(RedisKey_HExists, key, field))
+}
+
+func HKeys(hash interface{})(reply []interface{}, err error)  {
+	rc := redisPool.Get()
+	defer rc.Close()
+	return redis.Values(rc.Do(RedisKey_HKeys, hash))
 }

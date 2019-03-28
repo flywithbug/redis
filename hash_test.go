@@ -2,6 +2,7 @@ package redis
 
 import (
 	`fmt`
+	`github.com/gomodule/redigo/redis`
 	`testing`
 )
 
@@ -37,4 +38,13 @@ func TestHGetAll(t *testing.T) {
 func TestHIncrBy(t *testing.T) {
 	//fmt.Println(HSetNx("Hash","incre",1))
 	fmt.Println(HIncrBy("Hash","incre",1))
+}
+
+func TestHIncrByFloat(t *testing.T) {
+	//fmt.Println(HSetNx("Hash","InCre",0))
+	fmt.Println(HIncrByFloat("Hash","InCre",2.4))
+}
+
+func TestHKeys(t *testing.T) {
+	fmt.Println(redis.Strings(HKeys("Hash")))
 }
