@@ -13,6 +13,15 @@ const (
 
 	RedisKey_Expire = "Expire"
 	RedisKey_Expireat = "Expireat"
+
+	RedisKey_PERSIST = "PERSIST"
+
+
+
+	RedisKey_KEYS = "KEYS"
+
+	RedisKey_Move = "MOVE"
+
 )
 
 
@@ -62,6 +71,28 @@ func ExpireAt(key string,timestamp time.Time)(reply int,err error)  {
 	rc := redisPool.Get()
 	defer rc.Close()
 	return redis.Int(rc.Do(RedisKey_Expireat, key,timestamp.Unix()))
+}
+
+
+/*
+Keys 命令用于查找所有符合给定模式 pattern 的 key 。。 正则匹配
+*/
+func Keys(key string)(reply []string,err error)  {
+	rc := redisPool.Get()
+	defer rc.Close()
+	return redis.Strings(rc.Do(RedisKey_KEYS, key))
+}
+
+func Move(key string,db int)(reply int,err error)  {
+	rc := redisPool.Get()
+	defer rc.Close()
+	return redis.Int(rc.Do(RedisKey_Move, key,db))
+}
+
+func Persist(key string)(reply int,err error)  {
+	rc := redisPool.Get()
+	defer rc.Close()
+	return redis.Int(rc.Do(RedisKey_PERSIST, key))
 }
 
 
