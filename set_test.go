@@ -33,6 +33,10 @@ func TestSInter(t *testing.T) {
 	fmt.Println(SInterStore("Set2", "Set", "Set1"))
 }
 
+func TestSRem(t *testing.T) {
+	fmt.Println(SRem("Set1","a","bb","b","c"))
+}
+
 func TestSUnion(t *testing.T) {
 	fmt.Println(redis.Strings(SUnion("Set", "Set1")))
 }

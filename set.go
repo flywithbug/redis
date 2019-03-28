@@ -44,10 +44,10 @@ func SAdd(key interface{}, values ...interface{}) (err error) {
 /*
 删除名称为key的set中的元素member
 */
-func SRem(key string, value interface{}) (err error) {
+func SRem(key string, values... interface{}) (err error) {
 	rc := redisPool.Get()
 	defer rc.Close()
-	_, err = rc.Do(RedisKey_SREM, key, value)
+	_, err = rc.Do(RedisKey_SREM, argsForm(values, key)...)
 	return
 }
 
