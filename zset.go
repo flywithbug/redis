@@ -20,6 +20,10 @@ const (
 
 	RedisKey_ZINTERSTORE = "ZINTERSTORE"
 
+	RedisKey_ZLEXCOUNT = "ZLEXCOUNT" //计算字典区间成员数(分数都相同，按照字典排序)
+
+
+	RedisKey_ZRANGE = "ZRANGE"
 
 )
 
@@ -86,3 +90,33 @@ func ZInterStore(dst interface{},numKey int ,src... interface{})(reply int,err e
 	defer rc.Close()
 	return redis.Int(rc.Do(RedisKey_ZINTERSTORE, argsForm(src,dst,numKey)...))
 }
+
+
+/*
+在有序集合中计算指定字典区间内成员数量
+*/
+func ZLexCount(key ,min,max interface{})(reply int,err error)  {
+	rc := redisPool.Get()
+	defer rc.Close()
+	return redis.Int(rc.Do(RedisKey_ZLEXCOUNT, key,min,max))
+}
+
+
+/*
+Redis ZRange 返回有序集中，指定区间内的成员。
+其中成员的位置按分数值递增(从小到大)来排序。
+具有相同分数值的成员按字典序(lexicographical order )来排列。
+如果你需要成员按
+值递减(从大到小)来排列，请使用 ZREVRANGE 命令。
+下标参数 start 和 stop 都以 0 为底，也就是说，以 0 表示有序集第一个成员，以 1 表示有序集第二个成员，以此类推。
+你也可以使用负数下标，以 -1 表示最后一个成员， -2 表示倒数第二个成员，以此类推。
+*/
+func ZRange(key interface{},min,max int,needScore bool)(reply []interface{},err error)  {
+	rc := redisPool.Get()
+	defer rc.Close()
+	if needScore {
+		return redis.Values(rc.Do(RedisKey_ZRANGE,key,min,max,"WithSCORES"))
+	}
+	return redis.Values(rc.Do(RedisKey_ZRANGE,key,min,max))
+}
+

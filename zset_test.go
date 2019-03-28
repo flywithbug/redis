@@ -2,6 +2,7 @@ package redis
 
 import (
 	`fmt`
+	`github.com/gomodule/redigo/redis`
 	`testing`
 )
 
@@ -25,4 +26,12 @@ func TestZIncrBy(t *testing.T) {
 
 func TestZInterStore(t *testing.T) {
 	fmt.Println(ZInterStore("zAdd2",2,"zAdd","zAdd1"))
+}
+
+func TestZLexCount(t *testing.T) {
+	fmt.Println(ZLexCount("zAdd","[value1","[value3"))
+}
+
+func TestZRange(t *testing.T) {
+	fmt.Println(redis.Strings(ZRange("zAdd",0,4,true)))
 }
