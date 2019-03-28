@@ -19,6 +19,10 @@ const (
 	RedisKey_HExists = "HExists" //命令用于查看哈希表的指定字段是否存在。
 	RedisKey_HIncrByFloat = "HIncrByFloat" //Redis Hincrbyfloat 命令用于为哈希表中的字段值加上指定浮点数增量值。如果指定的字段不存在，那么在执行命令前，字段的值被初始化为 0 。
 	RedisKey_HKeys = "HKEYS"
+	RedisKey_HLEN = "HLEN"
+
+	RedisKey_HMGET = "HMGET" // Hmget 命令用于返回哈希表中，一个或多个给定字段的值。
+
 )
 
 /*
@@ -118,8 +122,30 @@ func HExists(key, field interface{}) (reply int, err error) {
 	return redis.Int(rc.Do(RedisKey_HExists, key, field))
 }
 
+/*
+获取所有哈希表中的字段
+*/
 func HKeys(hash interface{})(reply []interface{}, err error)  {
 	rc := redisPool.Get()
 	defer rc.Close()
 	return redis.Values(rc.Do(RedisKey_HKeys, hash))
+}
+
+/*
+获取哈希表中字段的数量
+*/
+func HLen(hash interface{})(reply int, err error)  {
+	rc := redisPool.Get()
+	defer rc.Close()
+	return redis.Int(rc.Do(RedisKey_HLEN, hash))
+}
+
+
+/*
+ HMGet 命令用于返回哈希表中，一个或多个给定字段的值。
+*/
+func HMGet(hash interface{},fields ...interface{})(reply []interface{}, err error)  {
+	rc := redisPool.Get()
+	defer rc.Close()
+	return redis.Values(rc.Do(RedisKey_HMGET, argsForm(fields,hash)...))
 }

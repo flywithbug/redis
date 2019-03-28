@@ -7,10 +7,12 @@ import (
 )
 
 func TestHSet(t *testing.T) {
-	fmt.Println(HSet("Hash","filed","value"))
+	fmt.Println(HSet(1,3,9))
 }
 
 func TestHMSet(t *testing.T) {
+	fmt.Println(HMSet("Hash","filed3","value3","filed2","value2"))
+
 	fmt.Println(HMSet("Hash","filed3","value3","filed2","value2"))
 }
 
@@ -47,4 +49,12 @@ func TestHIncrByFloat(t *testing.T) {
 
 func TestHKeys(t *testing.T) {
 	fmt.Println(redis.Strings(HKeys("Hash")))
+}
+
+func TestHLen(t *testing.T) {
+	fmt.Println(HLen("Hash"))
+}
+
+func TestHMGet(t *testing.T) {
+	fmt.Println(redis.Strings(HMGet("Hash","field","InCre")))
 }
