@@ -32,6 +32,8 @@ const (
 	RedisKey_ZREMRANGEBYLEX = "ZREMRANGEBYLEX"
 
 
+	RedisKey_ZREMRANGEBYRANK = "ZREMRANGEBYRANK"
+
 
 )
 
@@ -196,3 +198,15 @@ func ZRemRangeByLex(key,min,max interface{})(reply int,err error)  {
 	defer rc.Close()
 	return redis.Int(rc.Do(RedisKey_ZREMRANGEBYLEX, key,min,max))
 }
+
+/*
+Redis ZRemRangeByRank 命令用于移除有序集中，指定排名(rank)区间内的所有成员。
+*/
+func ZRemRangeByRank(key interface{},min,max int)(reply int,err error)  {
+	rc := redisPool.Get()
+	defer rc.Close()
+	return redis.Int(rc.Do(RedisKey_ZREMRANGEBYRANK, key,min,max))
+}
+
+
+

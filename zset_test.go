@@ -73,5 +73,9 @@ func TestZRemRangeByLex(t *testing.T) {
 	fmt.Println(ZAdd("salary",2500,"Jack"))
 	fmt.Println(ZAdd("salary",5000,"Tom"))
 	fmt.Println(ZAdd("salary",12000,"Peter"))
-	fmt.Println(ZRemRangeByLex("salary","[Jack","[Peter"))
+	fmt.Println(ZRemRangeByLex("salary","[Jack","[x"))
+}
+
+func TestZRemRangeByRank(t *testing.T) {
+	fmt.Println(ZRemRangeByRank("salary",0,3))
 }
