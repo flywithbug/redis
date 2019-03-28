@@ -14,9 +14,11 @@ Redis 有序集合和集合一样也是string类型元素的集合,且不允许�
 
 const (
 	RedisKey_ZADD = "ZADD"
-
 	RedisKey_ZCARD = "Zcard"
 	RedisKey_ZCOUNT = "ZCOUNT"
+	RedisKey_ZINCRBY = "ZINCRBY"
+
+	RedisKey_ZINTERSTORE = "ZINTERSTORE"
 
 
 )
@@ -54,4 +56,33 @@ func ZCount(key interface{},min,max float64)(reply int,err error)  {
 	rc := redisPool.Get()
 	defer rc.Close()
 	return redis.Int(rc.Do(RedisKey_ZCOUNT, key,min,max))
+}
+
+
+/*
+ZIncrBy 命令对有序集合中指定成员的分数加上增量 increment
+可以通过传递一个负数值 increment ，让分数减去相应的值，比如 ZINCRBY key -5 member ，就是让 member 的 score 值减去 5 。
+当 key 不存在，或分数不是 key 的成员时， ZINCRBY key increment member 等同于 ZADD key increment member 。
+当 key 不是有序集类型时，返回一个错误。
+分数值可以是整数值或双精度浮点数。
+*/
+
+func ZIncrBy(key,value interface{},incr float64)(reply float64,err error)  {
+	rc := redisPool.Get()
+	defer rc.Close()
+	return redis.Float64(rc.Do(RedisKey_ZINCRBY, key,incr,value))
+}
+
+
+/*
+Redis Zinterstore 命令计算给定的一个或多个有序集的交集，其中给定 key 的数量必须以 numKeys 参数指定，并将该交集(结果集)储存到 destination 。
+默认情况下，结果集中某个成员的分数值是所有给定集下该成员分数值之和。
+语法
+redis ZInterStore 命令基本语法如下：
+redis 127.0.0.1:6379> ZInterStore destination numkeys key [key ...] [WEIGHTS weight [weight ...]] [AGGREGATE SUM|MIN|MAX]
+*/
+func ZInterStore(dst interface{},numKey int ,src... interface{})(reply int,err error)  {
+	rc := redisPool.Get()
+	defer rc.Close()
+	return redis.Int(rc.Do(RedisKey_ZINTERSTORE, argsForm(src,dst,numKey)...))
 }

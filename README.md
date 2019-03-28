@@ -6,8 +6,15 @@ redigo 封装
 
 
 ``` 
-op := DefaultOptions()
-Init(op)
+op := Options{
+      		Host:        "127.0.0.1:6379",
+      		Password:    "",
+      		DB:          0,
+      		MaxIdle:     100,
+      		MaxActive:   500,
+      		IdleTimeout: 400,
+      	}
+Init(op) //初始化Redis
 
 func TestHSet(t *testing.T) {
 	fmt.Println(HSet(1,3,9))
