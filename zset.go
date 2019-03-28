@@ -23,16 +23,13 @@ const (
 	RedisKey_ZRevRange = "ZRevRange" //递减区间
 	RedisKey_ZRangeByLex = "ZRangeByLex"
 	RedisKey_ZRANGEBYSCORE = "ZRANGEBYSCORE"
-
 	RedisKey_ZRANK = "ZRANK"
-
 	RedisKey_ZREM= "ZREM"
-
-
 	RedisKey_ZREMRANGEBYLEX = "ZREMRANGEBYLEX"
-
-
 	RedisKey_ZREMRANGEBYRANK = "ZREMRANGEBYRANK"
+	RedisKey_ZREMRANGEBYSCORE = "ZREMRANGEBYSCORE"
+
+	RedisKey_ZREVRANGEBYSCORE = "ZREVRANGEBYSCORE"
 
 
 )
@@ -142,6 +139,7 @@ func ZRevRange(key interface{},min,max int,needScore bool)(reply []interface{},e
 }
 
 
+
 /*
 Redis ZRangeByLex 通过字典区间返回有序集合的成员。
 */
@@ -161,6 +159,7 @@ ZRangeByScore salary -inf +inf               # 显示整个有序集
 ZRangeByScore salary -inf 5000 WithSCORES    # 显示工资 <=5000 的所有成员
 # 显示工资大于 5000 小于等于 400000 的成员
 */
+//递增
 func ZRangeByScore(key, min,max interface{},needScore bool)(reply []interface{},err error)  {
 	rc := redisPool.Get()
 	defer rc.Close()
@@ -169,6 +168,17 @@ func ZRangeByScore(key, min,max interface{},needScore bool)(reply []interface{},
 	}
 	return redis.Values(rc.Do(RedisKey_ZRANGEBYSCORE,key,min,max))
 }
+
+//递减
+func ZRevRangeByScore(key ,min,max interface{},needScore bool)(reply []interface{},err error)  {
+	rc := redisPool.Get()
+	defer rc.Close()
+	if needScore {
+		return redis.Values(rc.Do(RedisKey_ZREVRANGEBYSCORE,key,min,max,"WithSCORES"))
+	}
+	return redis.Values(rc.Do(RedisKey_ZREVRANGEBYSCORE,key,min,max))
+}
+
 
 /*
 Redis Zrank 返回有序集中指定成员的排名。其中有序集成员按分数值递增(从小到大)顺序排列。
@@ -209,4 +219,12 @@ func ZRemRangeByRank(key interface{},min,max int)(reply int,err error)  {
 }
 
 
+/*
+Redis ZRemRangeByScore 命令用于移除有序集中，指定分数（score）区间内的所有成员。
+*/
+func ZRemRangeByScore(key interface{},min,max int)(reply int,err error)  {
+	rc := redisPool.Get()
+	defer rc.Close()
+	return redis.Int(rc.Do(RedisKey_ZREMRANGEBYSCORE, key,min,max))
+}
 

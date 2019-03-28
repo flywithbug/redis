@@ -54,6 +54,16 @@ func TestZRangeByScore(t *testing.T) {
 
 }
 
+func TestZRevRangeByScore(t *testing.T) {
+	fmt.Println(ZAdd("salary",2500,"Jack"))
+	fmt.Println(ZAdd("salary",5000,"Tom"))
+	fmt.Println(ZAdd("salary",12000,"Peter"))
+	fmt.Println(redis.Strings(ZRevRangeByScore("salary","+inf","-inf",false)))
+	fmt.Println(redis.Strings(ZRevRangeByScore("salary","+inf","-inf",true)))
+	fmt.Println(redis.Strings(ZRevRangeByScore("salary",40000,500,true)))
+
+}
+
 func TestZRank(t *testing.T) {
 	fmt.Println(ZRank("salary","Tom"))
 	fmt.Println(ZRank("salary","Jack"))
@@ -79,3 +89,13 @@ func TestZRemRangeByLex(t *testing.T) {
 func TestZRemRangeByRank(t *testing.T) {
 	fmt.Println(ZRemRangeByRank("salary",0,3))
 }
+
+func TestZRemRangeByScore(t *testing.T) {
+	fmt.Println(ZAdd("salary",2500,"Jack"))
+	fmt.Println(ZAdd("salary",5000,"Tom"))
+	fmt.Println(ZAdd("salary",12000,"Peter"))
+	fmt.Println(ZRemRangeByScore("salary",200,5000))
+}
+
+
+
