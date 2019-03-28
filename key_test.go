@@ -58,5 +58,4 @@ func TestType(t *testing.T) {
 	fmt.Println(Type("aSet1"))
 	fmt.Println(Type("Set0"))
 
-
 }

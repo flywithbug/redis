@@ -29,7 +29,7 @@ const (
 
 	RedisKey_SRANDMEMBER = "SRANDMEMBER" //随机返回名称为key的set的一个元素
 
-
+	RedisKey_SSCAN = "Sscan" //Redis Sscan 命令用于迭代集合中键的元素。
 
 
 
@@ -148,4 +148,10 @@ func SRandMember(key string,count int) (replay []interface{}, err error) {
 	rc := redisPool.Get()
 	defer rc.Close()
 	return redis.Values(rc.Do(RedisKey_SRANDMEMBER, key,count))
+}
+
+func SScan(key string,count int,pattern string)(replay []interface{}, err error)  {
+	rc := redisPool.Get()
+	defer rc.Close()
+	return redis.Values(rc.Do(RedisKey_SSCAN, key,count,"match",pattern))
 }

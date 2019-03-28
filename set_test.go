@@ -61,3 +61,8 @@ func TestSMembers(t *testing.T) {
 func TestSRandMember(t *testing.T) {
 	fmt.Println(redis.Strings(SRandMember("Set0",6)))
 }
+
+func TestSScan(t *testing.T) {
+
+	fmt.Println(SScan("Set0",100,"a*"))
+}
