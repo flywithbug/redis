@@ -3,6 +3,9 @@
 
 redigo 封装
 
+``` 
+go get github.com/gomodule/redigo/redis
+```
 
 
 ``` 
