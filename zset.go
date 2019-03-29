@@ -259,6 +259,6 @@ func ZUnionStore(dst interface{},keys ...interface{})(reply int,err error)  {
 /*
 Redis ZScan 命令用于迭代有序集合中的元素（包括元素成员和元素分值）
 */
-func ZScan()  {
-
-}
+//func ZScan()  {
+//
+//}
