@@ -4,6 +4,10 @@ import (
 	"github.com/gomodule/redigo/redis"
 	"time"
 )
+const (
+	RedisKey_PING = "PING"
+	RedisKey_SELECT = "SELECT"
+)
 
 var (
 	redisPool *redis.Pool
@@ -58,7 +62,28 @@ func newRedisPool(options Options) {
 	}
 }
 
+func Quit()  {
+	redisPool.Close()
+}
+
+func Ping()(reply string,err error)  {
+	rc := redisPool.Get()
+	defer rc.Close()
+	return redis.String(rc.Do(RedisKey_PING))
+}
+
 func Flush()  {
 	rc := redisPool.Get()
 	rc.Flush()
+}
+
+
+/*
+Redis Select 命令用于切换到指定的数据库，数据库索引号 index 用数字值指定，以 0 作为起始索引值。
+*/
+
+func Select(dbIndex int)(reply string,err error)  {
+	rc := redisPool.Get()
+	defer rc.Close()
+	return redis.String(rc.Do(RedisKey_SELECT,dbIndex))
 }

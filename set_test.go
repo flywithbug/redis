@@ -12,8 +12,8 @@ func init() {
 }
 
 func TestSAdd(t *testing.T) {
-	fmt.Println(SAdd("Set1", "aa", "bb"))
-	fmt.Println(SAdd("Set", "abd3", "d23"))
+	fmt.Println(SAdd("Set2", "aa1", "bb1"))
+	fmt.Println(SAdd("Set1", "abd31", "d231"))
 }
 
 func TestSExistMember(t *testing.T) {
@@ -63,6 +63,5 @@ func TestSRandMember(t *testing.T) {
 }
 
 func TestSScan(t *testing.T) {
-
 	fmt.Println(SScan("Set0",100,"a*"))
 }

@@ -40,16 +40,14 @@ func TestPublish(t *testing.T) {
 	fmt.Println("enter")
 	go func() {
 		SubScribe(func(message *redis.Message,err error) {
-			if err != nil {
-				fmt.Println(err)
-			}else {
+			if err == nil {
 				fmt.Println("receive:",message.Channel)
 				fmt.Println(string(message.Data))
 			}
 		},"channel1")
 	}()
 	for true {
-		time.Sleep(time.Second*2)
+		time.Sleep(time.Second*1)
 		fmt.Println(Publish("channel1","hello"))
 	}
 }

@@ -43,3 +43,11 @@ func TestNewRedisPool(t *testing.T) {
 func TestLBRPopLPush(t *testing.T) {
 	fmt.Println(redis.String(LRPopLPush("aSet", "Set")))
 }
+
+func TestPing(t *testing.T) {
+	fmt.Println(Ping())
+}
+
+func TestSelect(t *testing.T) {
+	fmt.Println(Select(1))
+}

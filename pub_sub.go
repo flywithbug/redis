@@ -38,12 +38,10 @@ func SubScribe(call CallBack,channel ...interface{})  {
 
 func ListenSubscribe(call CallBack,channel ...interface{})bool  {
 	rc := redisPool.Get()
+	defer rc.Close()
 	psc := redis.PubSubConn{Conn:rc}
 	psc.Subscribe(channel...)
-	defer func() {
-		psc.Close()
-		rc.Close()
-	}()
+
 	for {
 		switch v := psc.Receive().(type) {
 		case redis.Message:
