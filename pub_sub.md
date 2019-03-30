@@ -1,6 +1,6 @@
 
 
-##### Redis 发布订阅
+### Redis 发布订阅
 
 Redis 发布订阅(pub/sub)是一种消息通信模式：发送者(pub)发送消息，订阅者(sub)接收消息。
 Redis 客户端可以订阅任意数量的频道。
@@ -12,7 +12,7 @@ Redis 客户端可以订阅任意数量的频道。
 ![pub2](/source/pubsub2.png)
 
 
-实例
+**实例** 
 以下实例演示了发布订阅是如何工作的。在我们实例中我们创建了订阅频道名为 redisChat:
 
     redis 127.0.0.1:6379> SUBSCRIBE redisChat
