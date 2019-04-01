@@ -87,3 +87,6 @@ func Select(dbIndex int)(reply string,err error)  {
 	defer rc.Close()
 	return redis.String(rc.Do(RedisKey_SELECT,dbIndex))
 }
+
+
+
