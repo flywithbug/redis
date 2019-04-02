@@ -1,11 +1,13 @@
 # redis
 
 
-redigo 封装
+redigo 基础方法封装
 
 ``` 
-go get github.com/gomodule/redigo/redis
+go get github.com/flywithbug/redis
 ```
+
+
 
 
 ``` 

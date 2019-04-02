@@ -88,5 +88,22 @@ func Select(dbIndex int)(reply string,err error)  {
 	return redis.String(rc.Do(RedisKey_SELECT,dbIndex))
 }
 
+func Do(commandName string, args ...interface{}) (reply interface{}, err error){
+	rc := redisPool.Get()
+	defer rc.Close()
+	return rc.Do(commandName,args...)
+}
+
+func Send(commandName string, args ...interface{}) error  {
+	rc := redisPool.Get()
+	defer rc.Close()
+	return rc.Send(commandName,args...)
+}
+
+func Receive() (reply interface{}, err error){
+	rc := redisPool.Get()
+	defer rc.Close()
+	return rc.Receive()
+}
 
 
