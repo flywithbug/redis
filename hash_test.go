@@ -12,8 +12,7 @@ func TestHSet(t *testing.T) {
 
 func TestHMSet(t *testing.T) {
 	fmt.Println(HMSet("Hash","filed3","value3","filed2","value2"))
-
-	fmt.Println(HMSet("Hash","filed3","value3","filed2","value2"))
+	fmt.Println(redis.Strings(HMGet("Hash","filed3","filed2")))
 }
 
 func TestHSetNx(t *testing.T) {
